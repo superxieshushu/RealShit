@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_ios"
+        android:checked="true"
+        android:icon="@drawable/selected_ios"
+        android:title="iOS"/>
+
+    <item
+        android:id="@+id/menu_android"
+        android:icon="@drawable/selected_android"
+        android:title="Android"/>
+
+    <item
+        android:id="@+id/menu_benefit"
+        android:icon="@drawable/selected_benefit"
+        android:title="Benefit"/>
+
+</menu>
