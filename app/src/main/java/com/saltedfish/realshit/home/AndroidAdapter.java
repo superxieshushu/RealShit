@@ -25,7 +25,7 @@ import io.reactivex.functions.Consumer;
 public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.DetailViewHolder>
         implements Consumer<AndroidInfo> {
     private Context mContext;
-    private AndroidInfo mAndroidInfo;
+    private List<AndroidInfo.ResultsBean> mAndroidInfo = new ArrayList<>();
 
     @NonNull
     @Override
@@ -37,22 +37,29 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.DetailVi
 
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder holder, int position) {
-        holder.tvContent.setText(mAndroidInfo.getResults().get(position).getDesc());
-        List<String> iOSImgUrl = mAndroidInfo.getResults().get(position).getImages();
-        for (int i = 0; i < iOSImgUrl.size()&& i < holder.mIvList.size(); i++) {
-            Glide.with(mContext).load(iOSImgUrl.get(i)).into(holder.mIvList.get(i));
+        holder.tvContent.setText(mAndroidInfo.get(position).getDesc());
+        List<String> images = mAndroidInfo.get(position).getImages();
+        if (images != null) {
+            for (int i = 0; i < images.size() && i < holder.mIvList.size(); i++) {
+                Glide.with(mContext).load(images.get(i)).into(holder.mIvList.get(i));
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return mAndroidInfo == null || mAndroidInfo.getResults() == null ? 0 : mAndroidInfo.getResults().size();
+        return mAndroidInfo == null ? 0 : mAndroidInfo.size();
     }
 
     @Override
     public void accept(AndroidInfo androidInfo) throws Exception {
-        mAndroidInfo = androidInfo;
-        notifyDataSetChanged();
+        if (androidInfo.getPage() == 1) {
+            mAndroidInfo.clear();
+        }
+        if (androidInfo.getResults() != null) {
+            mAndroidInfo.addAll(androidInfo.getResults());
+            notifyDataSetChanged();
+        }
     }
 
     static class DetailViewHolder extends RecyclerView.ViewHolder {

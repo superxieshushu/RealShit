@@ -14,7 +14,16 @@ public class IOSInfo {
      */
 
     private boolean error;
+    private int page;
     private List<ResultsBean> results;
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
 
     public boolean isError() {
         return error;

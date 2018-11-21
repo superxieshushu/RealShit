@@ -11,6 +11,9 @@ import com.bumptech.glide.Glide;
 import com.saltedfish.realshit.R;
 import com.saltedfish.realshit.data.BenefitInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.functions.Consumer;
 
 /**
@@ -20,17 +23,22 @@ import io.reactivex.functions.Consumer;
 
 public class ParallaxAdapter extends BaseAdapter implements Consumer<BenefitInfo> {
     private int firstVisibleItem;
-    private BenefitInfo mBenefitInfo;
+    private List<BenefitInfo.ResultsBean> mBenefitInfo = new ArrayList<>();
 
     @Override
     public void accept(BenefitInfo benefitInfo) throws Exception {
-        mBenefitInfo = benefitInfo;
-        notifyDataSetChanged();
+        if (benefitInfo.getPage() == 1) {
+            mBenefitInfo.clear();
+        }
+        if (benefitInfo.getResults() != null) {
+            mBenefitInfo.addAll(benefitInfo.getResults());
+            notifyDataSetChanged();
+        }
     }
 
     @Override
     public int getCount() {
-        return mBenefitInfo == null || mBenefitInfo.getResults() == null ? 0 : mBenefitInfo.getResults().size();
+        return mBenefitInfo == null ? 0 : mBenefitInfo.size();
     }
 
     @Override
@@ -56,7 +64,7 @@ public class ParallaxAdapter extends BaseAdapter implements Consumer<BenefitInfo
             view.setTag(viewHolder);
         }
         viewHolder = (ParallaxViewHolder) view.getTag();
-        Glide.with(viewGroup).load(mBenefitInfo.getResults().get(position).getUrl()).into(viewHolder.ivContent);
+        Glide.with(viewGroup).load(mBenefitInfo.get(position).getUrl()).into(viewHolder.ivContent);
         viewHolder.parallaxItem.parallax(firstVisibleItem >= position ? 1f : 0);
         return view;
     }

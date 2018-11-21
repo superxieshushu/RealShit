@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.saltedfish.realshit.R;
-import com.saltedfish.realshit.data.AndroidInfo;
 import com.saltedfish.realshit.data.IOSInfo;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ import io.reactivex.functions.Consumer;
 public class IOSAdapter extends RecyclerView.Adapter<IOSAdapter.DetailViewHolder>
         implements Consumer<IOSInfo> {
     private Context mContext;
-    private IOSInfo mIOSInfo;
+    private List<IOSInfo.ResultsBean> mIOSInfo = new ArrayList<>();
 
     @NonNull
     @Override
@@ -38,22 +37,29 @@ public class IOSAdapter extends RecyclerView.Adapter<IOSAdapter.DetailViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder holder, int position) {
-        holder.tvContent.setText(mIOSInfo.getResults().get(position).getDesc());
-        List<String> iOSImgUrl = mIOSInfo.getResults().get(position).getImages();
-        for (int i = 0; i < iOSImgUrl.size()&& i < holder.mIvList.size(); i++) {
-            Glide.with(mContext).load(iOSImgUrl.get(i)).into(holder.mIvList.get(i));
+        holder.tvContent.setText(mIOSInfo.get(position).getDesc());
+        List<String> images = mIOSInfo.get(position).getImages();
+        if (images != null) {
+            for (int i = 0; i < images.size() && i < holder.mIvList.size(); i++) {
+                Glide.with(mContext).load(images.get(i)).into(holder.mIvList.get(i));
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return mIOSInfo == null || mIOSInfo.getResults() == null ? 0 : mIOSInfo.getResults().size();
+        return mIOSInfo == null ? 0 : mIOSInfo.size();
     }
 
     @Override
     public void accept(IOSInfo iosInfo) throws Exception {
-        mIOSInfo = iosInfo;
-        notifyDataSetChanged();
+        if (iosInfo.getPage() == 1) {
+            mIOSInfo.clear();
+        }
+        if (iosInfo.getResults() != null) {
+            mIOSInfo.addAll(iosInfo.getResults());
+            notifyDataSetChanged();
+        }
     }
 
     static class DetailViewHolder extends RecyclerView.ViewHolder {
