@@ -47,7 +47,7 @@ public class AndroidFragment extends Fragment {
     private void fetchData() {
         mCompositeDisposable = new CompositeDisposable();
         Disposable disposable = RetrofitUtil.getInstance().getApiService()
-                .fetchTodayInfo()
+                .fetchAndroidInfo("Android", "10", "1")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mAndroidAdapter);

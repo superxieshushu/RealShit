@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         mFragmentList = new ArrayList<>();
+        mFragmentList.add(new IOSFragment());
         mFragmentList.add(new AndroidFragment());
-        mFragmentList.add(new AndroidFragment());
-        mFragmentList.add(new AndroidFragment());
+        mFragmentList.add(new BenefitFragment());
         mViewPager.setAdapter(new MainAdapter(getSupportFragmentManager(), mFragmentList));
         mViewPager.setOffscreenPageLimit(2);
     }

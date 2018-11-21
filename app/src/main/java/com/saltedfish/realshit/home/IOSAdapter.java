@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.saltedfish.realshit.R;
 import com.saltedfish.realshit.data.AndroidInfo;
+import com.saltedfish.realshit.data.IOSInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,10 @@ import io.reactivex.functions.Consumer;
  * Created by SaltedFish on 2018/11/15.
  * 主界面适配器
  */
-public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.DetailViewHolder>
-        implements Consumer<AndroidInfo> {
+public class IOSAdapter extends RecyclerView.Adapter<IOSAdapter.DetailViewHolder>
+        implements Consumer<IOSInfo> {
     private Context mContext;
-    private AndroidInfo mAndroidInfo;
+    private IOSInfo mIOSInfo;
 
     @NonNull
     @Override
@@ -37,8 +38,8 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.DetailVi
 
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder holder, int position) {
-        holder.tvContent.setText(mAndroidInfo.getResults().get(position).getDesc());
-        List<String> iOSImgUrl = mAndroidInfo.getResults().get(position).getImages();
+        holder.tvContent.setText(mIOSInfo.getResults().get(position).getDesc());
+        List<String> iOSImgUrl = mIOSInfo.getResults().get(position).getImages();
         for (int i = 0; i < iOSImgUrl.size()&& i < holder.mIvList.size(); i++) {
             Glide.with(mContext).load(iOSImgUrl.get(i)).into(holder.mIvList.get(i));
         }
@@ -46,12 +47,12 @@ public class AndroidAdapter extends RecyclerView.Adapter<AndroidAdapter.DetailVi
 
     @Override
     public int getItemCount() {
-        return mAndroidInfo == null || mAndroidInfo.getResults() == null ? 0 : mAndroidInfo.getResults().size();
+        return mIOSInfo == null || mIOSInfo.getResults() == null ? 0 : mIOSInfo.getResults().size();
     }
 
     @Override
-    public void accept(AndroidInfo androidInfo) throws Exception {
-        mAndroidInfo = androidInfo;
+    public void accept(IOSInfo iosInfo) throws Exception {
+        mIOSInfo = iosInfo;
         notifyDataSetChanged();
     }
 
